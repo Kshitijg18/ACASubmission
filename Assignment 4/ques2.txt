@@ -1,0 +1,1 @@
+In the first case, the address of arr[0]will be printed. In the second "abcde" will be printed. Specfic reason is thats how cpp handle these things

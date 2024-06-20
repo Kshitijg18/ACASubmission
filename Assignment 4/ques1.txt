@@ -1,0 +1,1 @@
+No it won't. Since a[b] means *(a+b) and since addition here is commutative for pointers and arithematic number. i[arr] is equal to arr[i].
