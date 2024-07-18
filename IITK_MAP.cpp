@@ -1,81 +1,95 @@
-#include <bits/stdc++.h>
-#define ll long long
+#include <iostream>
+#include <vector>
+#include <unordered_map>
+#include <string>
+
 using namespace std;
 
 struct Edge {
-    string from, to;
-    double weight;
-    Edge(string from, string to, double weight) : from(from), to(to), weight(weight) {}
+    string destination;
+    int distance;
 };
 
 class Graph {
-private:
-    unordered_map<string, vector<pair<string, ll>>> adjacencyList;
-
 public:
-    void addEdge(const Edge& edge) {
-        adjacencyList[edge.from].push_back({edge.to, edge.weight});
-        adjacencyList[edge.to].push_back({edge.from, edge.weight});
+    void addNode(const string& node) {
+        adjacencyList[node] = vector<Edge>();
     }
 
-    void printGraph() {
-        for (const auto& node : adjacencyList) {
-            cout << node.first << " -> ";
-            for (const auto& neighbor : node.second) {
-                cout << "(" << neighbor.first << ", " << neighbor.second << ") ";
+    void addEdge(const string& source, const string& destination, int distance) {
+        adjacencyList[source].push_back({destination, distance});
+        adjacencyList[destination].push_back({source, distance});
+    }
+
+    void printGraph() const {
+        for (const auto& pair : adjacencyList) {
+            cout << pair.first << ": ";
+            for (const auto& edge : pair.second) {
+                cout << "(" << edge.destination << ", " << edge.distance << ") ";
             }
             cout << endl;
         }
     }
+
+private:
+    unordered_map<string, vector<Edge>> adjacencyList;
 };
 
 int main() {
-    vector<Edge> edges = {
-        {"Hall 11", "Hall 10", 200},
-        {"Hall 11", "Events Ground", 160},
-        {"Hall 10", "Hall 9", 180},
-        {"Hall 10", "p5", 175},
-        {"Events Ground", "Hall 8", 80},
-        {"Events Ground", "Pronite Ground", 160},
-        {"Hall 8", "p5", 50},
-        {"Hall 8", "Open Air Theatre", 80},
-        {"Hall 9", "p2", 180},
-        {"p2", "p3", 170},
-        {"Pronite Ground", "New Shopping Complex", 80},
-        {"Open Air Theatre", "p6", 160},
-        {"Hall 4", "Hall 3", 100},
-        {"Hall 4", "p4", 243},
-        {"Hall 4", "p6", 140},
-        {"Hall 13", "Hall 12", 150},
-        {"Hall 13", "p2", 100},
-        {"Hall 12", "p1", 280},
-        {"Hall 2", "Hall 1", 75},
-        {"Hall 2", "p7", 170},
-        {"Hall 2", "p1", 180},
-        {"Hall 5", "p3", 245},
-        {"Hall 5", "p8", 88},
-        {"Hall 5", "Hall 1", 89},
-        {"Hall 1", "p8", 75},
-        {"Hall 3", "p8", 100},
-        {"Hall 3", "Girls Hostel 1", 170},
-        {"New Shopping Complex", "p6", 80},
-        {"New Shopping Complex", "Health centre", 300},
-        {"Kargil Chowk", "p7", 250},
-        {"Kargil Chowk", "p9", 250},
-        {"Girls Hostel 1", "p7", 250},
-        {"Girls Hostel 1", "p9", 250},
-        {"Girls Hostel 1", "Health Centre", 345},
-        {"Hall 6", "Health Centre", 100},
-        {"Hall 6", "p10", 20},
-        {"Counselling Services", "p9", 140},
-        {"Counselling Services", "p10", 180},
-    };
+    Graph g;
 
-    Graph graph;
-    for (const auto& edge : edges) {
-        graph.addEdge(edge);
-    }
+    // Add nodes
+    g.addNode("Hall 1");
+    g.addNode("Hall 2");
+    g.addNode("Hall 3");
+    g.addNode("Hall 4");
+    g.addNode("Hall 5");
+    g.addNode("Hall 6");
+    g.addNode("Hall 7");
+    g.addNode("Hall 8");
+    g.addNode("Hall 9");
+    g.addNode("Hall 10");
+    g.addNode("Hall 11");
+    g.addNode("Hall 12");
+    g.addNode("Hall 13");
+    g.addNode("Girls Hostel 1");
+    g.addNode("Counselling Service");
+    g.addNode("Kargil Chowk");
+    g.addNode("Open Air Theatre");
+    g.addNode("New Shopping Complex");
+    g.addNode("Pronit Ground");
+    g.addNode("Health Centre");
 
-    graph.printGraph();
+    // Add edges
+    g.addEdge("Hall 1", "Hall 2", 180);
+    g.addEdge("Hall 1", "Hall 5", 75);
+    g.addEdge("Hall 2", "Hall 12", 180);
+    g.addEdge("Hall 2", "Hall 3", 100);
+    g.addEdge("Hall 3", "Hall 4", 100);
+    g.addEdge("Hall 4", "New Shopping Complex", 140);
+    g.addEdge("Hall 5", "Hall 6", 88);
+    g.addEdge("Hall 5", "Hall 3", 75);
+    g.addEdge("Hall 5", "Hall 9", 170);
+    g.addEdge("Hall 6", "Health Centre", 20);
+    g.addEdge("Hall 7", "Hall 8", 30);
+    g.addEdge("Hall 7", "Hall 10", 100);
+    g.addEdge("Hall 8", "Hall 11", 160);
+    g.addEdge("Hall 8", "Open Air Theatre", 50);
+    g.addEdge("Hall 9", "Hall 10", 180);
+    g.addEdge("Hall 9", "Hall 12", 150);
+    g.addEdge("Hall 9", "Hall 13", 100);
+    g.addEdge("Hall 10", "Hall 11", 200);
+    g.addEdge("Hall 10", "Hall 7", 100);
+    g.addEdge("Hall 11", "Pronit Ground", 160);
+    g.addEdge("Hall 12", "Hall 13", 280);
+    g.addEdge("Hall 12", "Hall 13", 180);
+    g.addEdge("Hall 13", "Hall 9", 100);
+    g.addEdge("Girls Hostel 1", "Kargil Chowk", 250);
+    g.addEdge("Girls Hostel 1", "Counselling Service", 250);
+    g.addEdge("Health Centre", "Counselling Service", 245);
+
+    // Print the graph
+    g.printGraph();
+
     return 0;
 }
